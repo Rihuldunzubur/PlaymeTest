@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class BarsStringController : MonoBehaviour {
-	public BreakScript[] breaks;
+	public BarScript[] breaks;
 	// Use this for initialization
 	void Start () {
 		for (int i = 0; i<breaks.Length; i++)
