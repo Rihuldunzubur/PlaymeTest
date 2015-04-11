@@ -16,23 +16,27 @@ public class BreakScript : MonoBehaviour {
 		breakLives = inType;
 
 	}
-
-	public void CollidedWithBall()
+	void OnCollisionEnter2D(Collision2D coll)
 	{
-		Debug.Log("bang!");
+
 		if ( breakLives >0) // Если равно нулю, то он уже уничтожен. Если меньше - то неуязвим.
 		{
-
+			Debug.Log("bang!");
 			breakLives--;
+			GetComponent<SpriteRenderer>().color = new Color(1,0,0);
+
 			if (breakLives ==0)// то уничтожаем и начисляем очки.
 			{
 				DestroyBreak();
 			}
 		}
+		
 	}
+
 	
 	void DestroyBreak()
 	{
+		Destroy(this.gameObject);
 	}
 
 	// Use this for initialization
