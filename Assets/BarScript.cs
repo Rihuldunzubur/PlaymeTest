@@ -36,6 +36,7 @@ public class BarScript : MonoBehaviour {
 	
 	void DestroyBar()
 	{
+		transform.parent.GetComponent<BarsStringController>().DecBars(this);
 		Destroy(this.gameObject);
 	}
 
