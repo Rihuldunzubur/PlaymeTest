@@ -23,7 +23,7 @@ public class BarRowsController : MonoBehaviour {
 		GameObject cntrlr;
 		while (true) 
 		{
-			yield return new WaitForSeconds(1);
+			yield return new WaitForSeconds(60);
 			if (gamefield .Count<9)
 			{
 				foreach( BarsStringController row in gamefield)

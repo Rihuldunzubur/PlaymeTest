@@ -6,25 +6,69 @@ using System.Collections;
 public class BallScript : MonoBehaviour {
 	public float speedKoef=1f;
 	public Vector2 speed;
+	public Transform club;
+	public bool ready = !true;
+
+
+	void Start()
+	{
+		//Init();
+	}
+
 	// Use this for initialization
-	void Start () {
-		//rigidbody2D.velocity = speed;
+	public void Init () {
+		ready = true;
 		rigidbody2D.AddForce(speed);
 		Debug.Log(rigidbody2D.velocity);
-
+		StartCoroutine(IncreaseSpeed());
 	}
+
 
 	/// <summary>
-	/// Если столкнулись с кирпичом.
+	/// Меняет скорость шарика "сверху", то есть бонусами. Или увеличивает, или уменьшает.
 	/// </summary>
-	/// <param name="coll">Coll.</param>
-	void OnCollisionEnter2D(Collision2D coll)
+	/// <param name="faster">Если true- то скорость увеличится.<c>true</c> faster.</param>
+	public void ChangeSpeed(bool faster)
 	{
-
+		Vector3 vel;
+		if (faster){
+			vel = rigidbody2D.velocity / speedKoef;
+			speedKoef*=1.05f;
+			vel *= speedKoef;
+			rigidbody2D.velocity = vel;
+		}
+		else{
+			vel = rigidbody2D.velocity / speedKoef;
+			speedKoef*=0.90f;
+			vel *= speedKoef;
+			rigidbody2D.velocity = vel;
+		}
 	}
-
+	/// <summary>
+	/// Ускорение шарика.
+	/// </summary>
+	/// <returns>The speed.</returns>
+	IEnumerator IncreaseSpeed()
+	{
+		Vector3 vel;
+		while (true)
+		{
+			yield return new WaitForSeconds(30);
+			Debug.Log(rigidbody2D.velocity);
+			vel = rigidbody2D.velocity / speedKoef;
+			speedKoef*=1.05f;
+			vel *= speedKoef;
+			rigidbody2D.velocity = vel;
+		}
+	}
+	
 	// Update is called once per frame
 	void Update () {
-	
+		if (!ready) {
+			transform.position = new Vector3(
+				club.position.x,
+				club.position.y +0.6f,
+				0);
+		}
 	}
 }
