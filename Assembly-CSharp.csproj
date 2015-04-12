@@ -50,7 +50,9 @@
      <Compile Include="Assets\BarRowsController.cs" />
      <Compile Include="Assets\BarScript.cs" />
      <Compile Include="Assets\BarsStringController.cs" />
+     <Compile Include="Assets\BonusScript.cs" />
      <Compile Include="Assets\ClubScript.cs" />
+     <Compile Include="Assets\Results.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

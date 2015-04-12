@@ -21,7 +21,7 @@ public class BarScript : MonoBehaviour {
 
 		if ( barLives >0) // Если равно нулю, то он уже уничтожен. Если меньше - то неуязвим.
 		{
-			Debug.Log("bang!");
+			//Debug.Log("Collision detected!");
 			barLives--;
 			GetComponent<SpriteRenderer>().color = new Color(1,0,0);
 
@@ -38,6 +38,13 @@ public class BarScript : MonoBehaviour {
 	{
 		transform.parent.GetComponent<BarsStringController>().DecBars(this);
 		Destroy(this.gameObject);
+		Results.instance.score ++;
+		if (UnityEngine.Random.Range(0,100)<10)
+		{
+			GameObject bonus = Instantiate (Resources.Load("Bonus")) as GameObject;
+			bonus.transform.position = this.transform.position;
+			bonus.SendMessage("Generate");
+		}
 	}
 
 	// Use this for initialization

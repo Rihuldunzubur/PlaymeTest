@@ -12,12 +12,14 @@ public class BallScript : MonoBehaviour {
 
 	void Start()
 	{
+
 		//Init();
 	}
 
 	// Use this for initialization
 	public void Init () {
 		ready = true;
+		speedKoef = 1;
 		rigidbody2D.AddForce(speed);
 		Debug.Log(rigidbody2D.velocity);
 		StartCoroutine(IncreaseSpeed());
@@ -30,6 +32,7 @@ public class BallScript : MonoBehaviour {
 	/// <param name="faster">Если true- то скорость увеличится.<c>true</c> faster.</param>
 	public void ChangeSpeed(bool faster)
 	{
+		Debug.Log(faster);
 		Vector3 vel;
 		if (faster){
 			vel = rigidbody2D.velocity / speedKoef;
@@ -69,6 +72,22 @@ public class BallScript : MonoBehaviour {
 				club.position.x,
 				club.position.y +0.6f,
 				0);
+		}
+	}
+	void OnTriggerEnter2D(Collider2D coll)
+	{
+		if (coll.name == "Borders")
+		{
+			Results.instance.lives--;
+			if (Results.instance.lives>0)
+			{
+				rigidbody2D.velocity = Vector2.zero;
+				club.GetComponent<ClubScript>().StopAllCoroutines();
+				club.GetComponent<ClubScript>().timer = 
+					club.GetComponent<ClubScript>().maxTimer;
+				ready = false;
+				speedKoef = 1;
+			}
 		}
 	}
 }
