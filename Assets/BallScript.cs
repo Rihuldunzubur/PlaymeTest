@@ -21,7 +21,6 @@ public class BallScript : MonoBehaviour {
 		ready = true;
 		speedKoef = 1;
 		rigidbody2D.AddForce(speed);
-		Debug.Log(rigidbody2D.velocity);
 		StartCoroutine(IncreaseSpeed());
 	}
 
@@ -57,7 +56,6 @@ public class BallScript : MonoBehaviour {
 		while (true)
 		{
 			yield return new WaitForSeconds(30);
-			Debug.Log(rigidbody2D.velocity);
 			vel = rigidbody2D.velocity / speedKoef;
 			speedKoef*=1.05f;
 			vel *= speedKoef;
