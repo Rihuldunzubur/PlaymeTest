@@ -14,7 +14,17 @@ public class BarScript : MonoBehaviour {
 	public void Init( int inType)
 	{
 		barLives = inType;
-
+		if (barLives <=0)barLives = -1;
+		if (barLives ==3) barLives = 4;// потому что не три удара, а четыре.
+		Color clr = new Color(1,1,1);
+		switch (barLives)
+		{
+			case -1: clr = new Color(1,1,1);break;
+			case 1: clr = new Color(0,1,0); break;
+			case 2: clr = new Color(1,0.5f,0); break;
+			case 4: clr = new Color(1,0,0);break;
+		}
+		GetComponent<SpriteRenderer>().color = clr;
 	}
 	void OnCollisionEnter2D(Collision2D coll)
 	{
@@ -23,8 +33,6 @@ public class BarScript : MonoBehaviour {
 		{
 			//Debug.Log("Collision detected!");
 			barLives--;
-			GetComponent<SpriteRenderer>().color = new Color(1,0,0);
-
 			if (barLives ==0)// то уничтожаем и начисляем очки.
 			{
 				DestroyBar();
@@ -37,7 +45,7 @@ public class BarScript : MonoBehaviour {
 	void DestroyBar()
 	{
 		transform.parent.GetComponent<BarsStringController>().DecBars(this);
-		Destroy(this.gameObject);
+		StartCoroutine(IDestroy());
 		Results.instance.score ++;
 		if (UnityEngine.Random.Range(0,100)<10)
 		{
@@ -45,6 +53,20 @@ public class BarScript : MonoBehaviour {
 			bonus.transform.position = this.transform.position;
 			bonus.SendMessage("Generate");
 		}
+	}
+
+	IEnumerator IDestroy()
+	{
+		Color clr;
+		GetComponent<BoxCollider2D>().enabled = false;
+		for (int i = 25; i>=0; i--)
+		{
+			yield return new WaitForFixedUpdate();
+			clr = GetComponent<SpriteRenderer>().color;
+			clr.a = (float)i/25;
+			GetComponent<SpriteRenderer>().color = clr;
+		}
+		Destroy(this.gameObject);
 	}
 
 	// Use this for initialization
