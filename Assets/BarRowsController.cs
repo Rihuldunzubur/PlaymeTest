@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class BarRowsController : MonoBehaviour {
 
 	public int GetSecondLineBreak(int inNum)
 	{
-		if (gamefield.Count>=1)
-			return gamefield[gamefield.Count-1].lBreaks[inNum].barLives;
-		else return 1;
+		try {
+			if (gamefield.Count>=1)
+				return gamefield[gamefield.Count-1].lBreaks[inNum].barLives;
+			else return 1;
+		}
+		catch (ArgumentException) {return 1;}// то есть блок уничтожен, а значит он не был неразрушимым.
 	}
 
 	public List<BarsStringController> gamefield;

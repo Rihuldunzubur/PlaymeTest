@@ -86,6 +86,7 @@ public class BallScript : MonoBehaviour {
 				ready = false;
 				speedKoef = 1;
 			}
+			else Results.instance.UpdateTable();
 		}
 	}
 }

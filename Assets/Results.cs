@@ -35,7 +35,7 @@ public class Results : MonoBehaviour {
 	/// <param name="inRowNum">In row number.</param>
 	int GetTableRowScore(int inRowNum)
 	{
-		if (inRowNum>10 || inRowNum<=0) return -1;
+		if (inRowNum>10 || inRowNum<=0 || !(PlayerPrefs.HasKey("RecordScore"+inRowNum.ToString()))) return -1;
 		else
 		{
 			return PlayerPrefs.GetInt("RecordScore"+inRowNum.ToString());
@@ -59,20 +59,36 @@ public class Results : MonoBehaviour {
 	public int lives = 3;
 	// Use this for initialization
 	void Start () {
-		//PlayerPrefs.DeleteAll();
+	//	PlayerPrefs.DeleteAll();
 	}
-	void UpdateTable()
+	public void UpdateTable()
 	{
-		bool shallBreak = false;
-		for(int i = 1; i<=10 && !shallBreak; i++)
+		string[] arrName = new string[10];
+		int[] scores = new int[10];
+		for (int i = 0; i<10; i++)
 		{
-			if (score > GetTableRowScore(i))
+			scores[i] = GetTableRowScore(i+1);
+			arrName[i] = GetTableRowName(i+1);
+		}
+		if (score>scores[9]) // больше наименьшего
+		{
+			scores[9] = score;
+			arrName[9] = System.DateTime.Now.ToString();
+			for (int i = 8; i>=0; i--)
 			{
-				for (int j = 10; j>i; j--) SetRow(GetTableRowName(j+1),GetTableRowScore(j+1),j);
-				string s = System.DateTime.Now.ToString();
-				SetRow(s,score, i);
-				shallBreak = true;
+				if (scores[i+1]>scores[i])
+				{
+					int tmp = scores[i];
+					scores[i] = scores[i+1];
+					scores[i+1] = tmp;
+					//----
+					string stmp = arrName[i];
+					arrName[i] = arrName[i+1];
+					arrName[i+1] = stmp;
+				}
 			}
+			for (int i = 0; i<10; i++)
+				SetRow(arrName[i],scores[i],i+1);
 		}
 	}
 
@@ -83,12 +99,12 @@ public class Results : MonoBehaviour {
 		else
 		{
 			string s = "";
-			UpdateTable();
 			for (int i = 1; i<11; i++)
 			{
 				s += GetTableRowName(i) + "\v - \v"+ GetTableRowScore(i).ToString() + '\n';
  			}
 			GUI.Box(new Rect(20,20,Screen.width-40,Screen.height- 40), s);
+			if (GUI.Button(new Rect(Screen.width/2 - 40, Screen.height-80,80, 20),"REPLAY")) Application.LoadLevel("Scene");
 		}
 	}
 
